@@ -3,7 +3,7 @@ var Item = require('../models/item');
 exports.save = function(name, callback, errback) {
 	Item.create({ name: name }, function(err, item) {
 		if (err) {
-			errboack(err);
+			errback(err);
 			return;
 		}
 		callback(item);
@@ -17,5 +17,25 @@ exports.list = function(callback, errback) {
 			return;
 		}
 		callback(items);
+	});
+};
+
+exports.update = function(id, update, callback, errback) {
+	Item.findOneAndUpdate({ id: id }, { name: update }, function(err, item) {
+		if (err) {
+			errback(err);
+			return;
+		}
+		callback(item);
+	});
+};
+
+exports.delete = function(id, callback, errback) {
+	Item.findOneAndRemove({ id: id }, function(err, item) {
+		if (err) {
+			errback(err);
+			return;
+		}
+		callback(item);
 	});
 };
