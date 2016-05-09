@@ -21,7 +21,7 @@ exports.list = function(callback, errback) {
 };
 
 exports.update = function(id, update, callback, errback) {
-	Item.findByIdAndUpdate({ id: id }, { name: update }, function(err, item) {
+	Item.findByIdAndUpdate(id, { name: update }, function(err, item) {
 		if (err) {
 			errback(err);
 			return;
@@ -31,7 +31,7 @@ exports.update = function(id, update, callback, errback) {
 };
 
 exports.delete = function(id, callback, errback) {
-	Item.findByIdAndRemove({ id: id }, function(err, item) {
+	Item.findByIdAndRemove(id, function(err, item) {
 		if (err) {
 			errback(err);
 			return;
