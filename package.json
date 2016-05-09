@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js",
-    "test": ""
+    "start": "nodemon server.js"
   },
   "author": "Jim Strother",
   "license": "ISC",
