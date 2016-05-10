@@ -21,6 +21,7 @@ exports.list = function(callback, errback) {
 };
 
 exports.update = function(id, update, callback, errback) {
+	console.log('id', id, 'update', update);
 	Item.findByIdAndUpdate(id, { name: update }, function(err, item) {
 		if (err) {
 			errback(err);

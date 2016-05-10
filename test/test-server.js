@@ -1,5 +1,6 @@
 var chai = require('chai');
 var chaiHttp = require('chai-http');
+var async = require('async');
 
 global.environment = 'test';
 var server = require('../server.js');
@@ -60,10 +61,19 @@ describe('Shopping List', function() {
             });
     });
     it('should edit an item on PUT', function(done) {
-        chai.request(app)
-            .put('/items/0')
+    	async.series([
+    		function(callback) {
+    			Item.findOne({ name: 'Broad Beans' }, function(err, item) {
+    				callback(err, item);
+    			});
+    		}], function(err, results) {
+    			console.log(results);
+    			var id = results[0]._id;
+    			chai.request(app)
+            .put('/items/' + id)
             .send({'name': 'Black Beans'})
             .end(function(err, res) {
+            	console.log(res.body);
                 should.equal(err, null);
                 res.should.have.status(200);
                 res.should.be.json;
@@ -72,10 +82,11 @@ describe('Shopping List', function() {
                 res.body.should.have.property('_id');
                 res.body.name.should.be.a('string');
                 res.body._id.should.be.a('string');
-                res.body._id.should.equal(0);
+                res.body._id.should.equal(id.toString());
                 res.body.name.should.equal('Black Beans');
                 done();
             });
+    		});
     });
     it('should return an error if there is nothing to edit', function(done) {
         chai.request(app)

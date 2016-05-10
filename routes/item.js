@@ -21,6 +21,7 @@ router.post('/items', function(req, res) {
 router.put('/items/:id', function (req, res) {
 	Item.update(req.params.id, req.body.name, function(item) {
 		console.log('Successfully changed ' + req.body.name + ' at id ' + req.params.id);
+		console.log(item);
 		res.json(item);
 	}, function(err) {
 		console.log('Tried changing ' + req.body.name + ' at id ' + req.params.id);
