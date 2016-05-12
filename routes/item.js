@@ -18,8 +18,8 @@ router.post('/items', function(req, res) {
 	});
 });
 
-router.put('/items/:id', function (req, res) {
-	Item.update(req.params.id, req.body.name, function(item) {
+router.put('/items/:name', function (req, res) {
+	Item.update(req.params.name, req.body.name, function(item) {
 		res.json(item);
 	}, function(err) {
 		res.status(400).json(err);

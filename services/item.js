@@ -20,8 +20,8 @@ exports.list = function(callback, errback) {
 	});
 };
 
-exports.update = function(name, update, callback, errback) {
-	Item.findOneAndUpdate(name, { name: update }, function(err, item) {
+exports.update = function(id, update, callback, errback) {
+	Item.findByIdAndUpdate(id, { name: update }, {new: true}, function(err, item) {
 		if (err) {
 			errback(err);
 			return;
