@@ -20,21 +20,16 @@ router.post('/items', function(req, res) {
 
 router.put('/items/:id', function (req, res) {
 	Item.update(req.params.id, req.body.name, function(item) {
-		console.log('Successfully changed ' + req.body.name + ' at id ' + req.params.id);
-		console.log(item);
 		res.json(item);
 	}, function(err) {
-		console.log('Tried changing ' + req.body.name + ' at id ' + req.params.id);
 		res.status(400).json(err);
 	});
 });
 
 router.delete('/items/:id', function(req, res) {
 	Item.delete(req.params.id, function(item) {
-		console.log('Successfully deleted ' + req.body.name + ' at id ' + req.params.id);
 		res.json(item);
 	}, function(err) {
-		console.log('Tried deleting ' + req.body.name + ' at id ' + req.params.id);
 		res.status(400).json(err);
 	});
 });

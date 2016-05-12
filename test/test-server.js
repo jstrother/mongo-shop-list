@@ -63,17 +63,15 @@ describe('Shopping List', function() {
     it('should edit an item on PUT', function(done) {
     	async.series([
     		function(callback) {
-    			Item.findOne({ name: 'Broad Beans' }, function(err, item) {
-    				callback(err, item);
+    			Item.findOneAndUpdate({ name: 'Broad Beans' }, {name: 'Black Beans'}, function(err, item) {
+    					callback(err, item);
     			});
     		}], function(err, results) {
-    			console.log(results);
     			var id = results[0]._id;
     			chai.request(app)
             .put('/items/' + id)
             .send({'name': 'Black Beans'})
             .end(function(err, res) {
-            	console.log(res.body);
                 should.equal(err, null);
                 res.should.have.status(200);
                 res.should.be.json;
@@ -90,7 +88,7 @@ describe('Shopping List', function() {
     });
     it('should return an error if there is nothing to edit', function(done) {
         chai.request(app)
-        .put('/items/4')
+        .put('/items/1977')
         .send({'name': 'Green Beans'})
         .end(function(err, res) {
             should.equal(err, null);
@@ -101,21 +99,30 @@ describe('Shopping List', function() {
             res.body.should.have.property('_id');
             res.body.name.should.be.a('string');
             res.body._id.should.be.a('string');
-            res.body._id.should.equal(4);
             res.body.name.should.equal('Green Beans');
             done();
         });
     });
     it('should remove an item on DELETE', function(done) {
-        chai.request(app)
-            .delete('/items/0')
+    	var id = null;
+			Item.findOne({name: 'Tomatoes'}, function(err, item) {
+				id = item._id;
+			});
+    	async.series([
+    		function(callback) {
+    			Item.findOneAndRemove({name: 'Tomatoes'}, function(err, item) {
+    				callback(err, item);
+    			});
+    		}], function(err, results) {
+    			chai.request(app)
+            .delete('/items/' + id)
             .end(function(err, res) {
                 should.equal(err, null);
                 res.should.have.status(200);
                 res.should.be.json;
-                res.body.should.be.a('object');
                 done();
             });
+          });        
     });
     it('should return an error if there is nothing to remove', function(done) {
         chai.request(app)
